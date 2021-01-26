@@ -1,6 +1,9 @@
 package com.example.medenjak.model;
 
 public class Product {
+    private static int ID = 0;
+
+    private final int id;
     private String name;
     private String description;
     private String wayOfUse;
@@ -8,6 +11,7 @@ public class Product {
     private int picture;
 
     public Product(String name, String description, String wayOfUse, int price, int picture) {
+        id = ID++;
         this.name = name;
         this.description = description;
         this.wayOfUse = wayOfUse;
@@ -53,5 +57,9 @@ public class Product {
 
     public void setPicture(int picture) {
         this.picture = picture;
+    }
+
+    public int getId() {
+        return id;
     }
 }

@@ -125,7 +125,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_weight="1"
                 android:hint="@string/telefon"
-                android:inputType="textPersonName"/>
+                android:inputType="phone" />
         </LinearLayout>
 
     </LinearLayout>

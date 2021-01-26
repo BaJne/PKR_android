@@ -11,40 +11,41 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.medenjak.R;
+import com.example.medenjak.model.Order;
 import com.example.medenjak.model.Product;
 import com.example.medenjak.util.Util;
 
 import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder>  {
+public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
 
     private final Context context;
-    private final List<Product> contentList;
+    private final List<Order> contentList;
     private final ListItemClickListener mOnClickListener;
 
 
-    public ProductAdapter(Context context, List<Product> contentList, ListItemClickListener listener){
+    public OrderAdapter(Context context, List<Order> contentList, ListItemClickListener listener){
         this.context = context;
         this.contentList = contentList;
         mOnClickListener = listener;
     }
 
-    @NonNull
-    @Override
+    @NonNull @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Here, instead of context could be put viewGroup - parent.getContext()
-        View view = LayoutInflater.from(context).inflate(R.layout.product_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.order_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Product product = contentList.get(position);
+        Order order = contentList.get(position);
 
-        holder.name.setText(product.getName());
-        holder.price.setText(Util.formatCurrency(product.getPrice()));
-        holder.picture.setImageResource(product.getPicture());
-        holder.clickView.setOnClickListener(v->{
+        holder.totalItems.setText(Util.articleCountToString(order.getCart().size()));
+        holder.date.setText(Util.formatDate(order.getDeliveryDate()));
+        holder.price.setText(Util.formatCurrency(order.getTotalCost()));
+        holder.status.setText(order.getStatus().getStatusMsg());
+
+        holder.click.setOnClickListener(v -> {
             mOnClickListener.onListItemClick(position);
         });
     }
@@ -55,18 +56,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        public ImageView picture;
-        public TextView name;
+        public TextView totalItems;
+        public TextView date;
         public TextView price;
-        public View clickView;
+        public TextView status;
+        public View click;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            picture = itemView.findViewById(R.id.product_picture);
-            name = itemView.findViewById(R.id.product_name);
-            price = itemView.findViewById(R.id.product_price);
-            clickView = itemView.findViewById(R.id.click);
+            totalItems = itemView.findViewById(R.id.order_item_article_count);
+            date = itemView.findViewById(R.id.order_item_date);
+            price = itemView.findViewById(R.id.order_item_total_cost);
+            status = itemView.findViewById(R.id.order_item_status);
+            click = itemView.findViewById(R.id.order_item_click);
         }
     }
 }

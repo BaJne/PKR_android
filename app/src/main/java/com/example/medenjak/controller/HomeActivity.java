@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.medenjak.R;
@@ -16,12 +17,14 @@ import com.example.medenjak.controller.fragments.OrderFragment;
 import com.example.medenjak.controller.fragments.ProductsFragment;
 import com.example.medenjak.data.Repository;
 import com.example.medenjak.model.User;
+import com.example.medenjak.util.Util;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class HomeActivity extends AppCompatActivity implements Navigator{
 
     public static final String TAG = HomeActivity.class.getSimpleName();
-    User user = null;
+    private User user = null;
+    private BottomNavigationView bottomNavigation;
 
     private final BottomNavigationView.OnNavigationItemSelectedListener bottomNavigationListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         private Integer oldId = 0;
@@ -31,11 +34,8 @@ public class HomeActivity extends AppCompatActivity implements Navigator{
 
             if(oldId == id){
                 return false;
-            } else {
-                oldId = id;
             }
 
-            Log.d(TAG, "onNavigationItemSelected: itemId: " + id);
             Fragment fragment = null;
 
             switch (id){
@@ -51,8 +51,10 @@ public class HomeActivity extends AppCompatActivity implements Navigator{
                     setTitle(R.string.orders);
                     fragment = new OrderFragment();
                     break;
+                default: return false;
             }
 
+            oldId = id;
             show(fragment);
             return true;
         }
@@ -63,11 +65,49 @@ public class HomeActivity extends AppCompatActivity implements Navigator{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        Log.d(TAG, "onCreate: ");
         checkIsUserAuthenticated();
-        BottomNavigationView bottomNavigation = findViewById(R.id.nav);
+        bottomNavigation = findViewById(R.id.nav);
         bottomNavigation.setOnNavigationItemSelectedListener(bottomNavigationListener);
 
         bottomNavigation.setSelectedItemId(R.id.products);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        Log.d(TAG, "onOptionsItemSelected: " + id);
+
+        switch (id){
+            case R.id.user_data:
+                startActivity(UserDataActivity.class);
+                break;
+            case R.id.password_data:
+                startActivity(PasswordChangeActivity.class);
+                break;
+            case R.id.logout_option:
+                Repository.logout();
+                checkIsUserAuthenticated();
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+        String msg = Repository.getNotification();
+        if(msg != null){
+            Util.makeSnackBar(findViewById(R.id.container), msg, false);
+        }
     }
 
     private void checkIsUserAuthenticated() {
@@ -79,10 +119,17 @@ public class HomeActivity extends AppCompatActivity implements Navigator{
         }
     }
 
+
+    @Override
+    public void selectBottomNavigationMenu(int id) {
+        bottomNavigation.setSelectedItemId(id);
+    }
+
     @Override
     public void show(Fragment fragment){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+        transaction.setCustomAnimations(android.R.anim.fade_in, 0);
+
         if(fragment.isAdded()){
             Log.d(TAG, "show: Fragment is added!");
             transaction.show(fragment).commit();

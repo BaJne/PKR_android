@@ -3,7 +3,6 @@ package com.example.medenjak.data;
 import android.util.Log;
 
 import com.example.medenjak.model.User;
-
 import java.util.ArrayList;
 
 class AuthenticationService {
@@ -21,6 +20,7 @@ class AuthenticationService {
 
     private final ArrayList<User> users;
     private User activeUser = null;
+    private int activeIndex = -1;
 
     private AuthenticationService() {
         this.users = new ArrayList<>();
@@ -32,16 +32,19 @@ class AuthenticationService {
     }
 
     public boolean login(String username, String password){
-        return users.stream().anyMatch(user -> {
+        for(int i = 0; i < users.size(); ++i){
+            User user = users.get(i);
             if(user.getUsername().equals(username) && user.getPassword().equals(password)){
                 activeUser = user;
+                activeIndex = i;
                 return true;
             }
-            return false;
-        });
+        }
+        return false;
     }
 
     public void logout(){
+        activeIndex = -1;
         activeUser = null;
     }
 
@@ -53,7 +56,27 @@ class AuthenticationService {
                 return USERNAME_IN_USE;
             }
         }
+        users.add(user);
         return REGISTRATION_OK;
+    }
+
+    public void updateUserDetails(User user){
+        if(activeUser == null)
+            return;
+        user.setPassword(activeUser.getPassword());
+        activeUser = user;
+        users.set(activeIndex, user);
+    }
+
+    public boolean updateUserPassword(String oldPassword, String password){
+        if(activeUser == null)
+            return false;
+
+        if(!oldPassword.equals(activeUser.getPassword()))
+            return false;
+
+        activeUser.setPassword(password);
+        return true;
     }
 
     public User getActiveUser(){

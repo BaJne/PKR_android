@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/m"
+        android:icon="@drawable/ic_dehaze"
+        android:title=""
+        app:showAsAction="always">
+        <menu>
+            <item android:id="@+id/user_data"
+                android:icon="@drawable/ic__account"
+                android:title="@string/user_data" />
+
+            <item android:id="@+id/password_data"
+                android:icon="@drawable/ic_vpn_key"
+                android:title="@string/change_password" />
+
+            <item android:id="@+id/logout_option"
+                android:icon="@drawable/ic_logout"
+                android:title="@string/log_out" />
+        </menu>
+    </item>
+
+</menu>

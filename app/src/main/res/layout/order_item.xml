@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/order_item_click"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:backgroundTint="@color/blend"
+    android:paddingHorizontal="8dp"
+    android:paddingVertical="15dp"
+    android:gravity="center_vertical"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/order_item_article_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:textAlignment="center"
+        tools:text="7 proizvoda"/>
+
+    <TextView
+        android:id="@+id/order_item_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="10dp"
+        android:fontFamily="@font/roboto_regular"
+        android:layout_weight="4"
+        android:textAlignment="center"
+        tools:text="24/10/2000" />
+
+    <TextView
+        android:id="@+id/order_item_total_cost"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:textColor="@color/link_blue"
+        android:layout_weight="4"
+        android:paddingHorizontal="8dp"
+        android:textAlignment="center"
+        tools:text="1,200.00 din." />
+
+    <TextView
+        android:id="@+id/order_item_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:background="@drawable/rect_background"
+        android:backgroundTint="@color/orange"
+        android:textColor="@color/white"
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="5dp"
+        android:layout_weight="4"
+        tools:text="Nije obaradjeno"/>
+
+</LinearLayout>
